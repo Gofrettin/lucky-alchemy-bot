@@ -1,5 +1,4 @@
-﻿using RSBot.Core;
-using RSBot.Core.Event;
+﻿using RSBot.Core.Event;
 using RSBot.Core.Network;
 using RSBot.Core.Objects;
 
@@ -15,17 +14,17 @@ namespace LuckyAlchemyBot.Network.Handler
 
         #endregion Properties
 
+        #region Methods
+
         public void Invoke(Packet packet)
         {
             EventManager.FireEvent("OnStoneAlchemy");
-            
+
             var result = packet.ReadByte();
 
             if (result == 2) //Error
             {
-                EventManager.FireEvent("OnStoneAlchemyCanceled");
-
-                Log.Error($"[LuckyAlchemyBot] Stone fuse error: 0x{packet.ReadByte():FF}");
+                EventManager.FireEvent("OnStoneAlchemyError", packet.ReadUShort());
 
                 return;
             }
@@ -52,8 +51,10 @@ namespace LuckyAlchemyBot.Network.Handler
 
                 return;
             }
-            
+
             EventManager.FireEvent("OnStoneAlchemySuccess", InventoryItem.FromPacket(packet, slot));
         }
+
+        #endregion Methods
     }
 }

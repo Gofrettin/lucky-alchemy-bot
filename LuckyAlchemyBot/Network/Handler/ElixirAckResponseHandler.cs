@@ -18,7 +18,7 @@ namespace LuckyAlchemyBot.Network.Handler
         public void Invoke(Packet packet)
         {
             EventManager.FireEvent("OnElixirAlchemy");
-            
+
             var result = packet.ReadByte();
 
             if (result == 2)
@@ -52,7 +52,7 @@ namespace LuckyAlchemyBot.Network.Handler
 
                 return;
             }
-            
+
             EventManager.FireEvent("OnElixirAlchemySuccess", InventoryItem.FromPacket(packet, slot));
         }
     }

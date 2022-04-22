@@ -4,7 +4,7 @@ namespace LuckyAlchemyBot
 {
     internal static class StringExtension
     {
-        public static string FormatJoymaxTranslation<T1>(this string unformatted, T1 valA)
+        public static string JoymaxFormat<T1>(this string unformatted, T1 valA)
         {
             var stringBulder = new StringBuilder(unformatted);
             stringBulder = stringBulder.Replace("%d", "%s");
@@ -14,7 +14,7 @@ namespace LuckyAlchemyBot
             return stringBulder.ToString();
         }
 
-        public static string FormatJoymaxTranslation<T1, T2>(this string unformatted, T1 valA, T2 valB)
+        public static string JoymaxFormat<T1, T2>(this string unformatted, T1 valA, T2 valB)
         {
             var stringBulder = new StringBuilder(unformatted);
             stringBulder = stringBulder.Replace("%d", "%s");
@@ -25,7 +25,7 @@ namespace LuckyAlchemyBot
             return stringBulder.ToString();
         }
 
-        public static string FormatJoymaxTranslation<T1, T2, T3>(this string unformatted, T1 valA, T2 valB, T3 valC)
+        public static string JoymaxFormat<T1, T2, T3>(this string unformatted, T1 valA, T2 valB, T3 valC)
         {
             var stringBulder = new StringBuilder(unformatted);
             stringBulder = stringBulder.Replace("%d", "%s");

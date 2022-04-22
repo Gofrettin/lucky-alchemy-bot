@@ -1,17 +1,25 @@
-﻿using LuckyAlchemyBot.Properties;
+﻿using LuckyAlchemyBot.Bot;
+using LuckyAlchemyBot.Client;
+using LuckyAlchemyBot.Network.Handler;
+using LuckyAlchemyBot.Properties;
+using LuckyAlchemyBot.Subscriber;
 using LuckyAlchemyBot.Views;
 using RSBot.Core;
 using RSBot.Core.Event;
 using RSBot.Core.Network;
 using RSBot.Core.Plugins;
+using System;
 using System.Drawing;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace LuckyAlchemyBot
 {
     public class LuckyAlchemyBot : IBotbase
     {
-        public static System.Version Version => new System.Version("0.1.0");
+        #region Properties
+
+        public static Version Version => new Version("0.1.0");
 
         public BotbaseInfo Info => new BotbaseInfo()
         {
@@ -21,18 +29,27 @@ namespace LuckyAlchemyBot
             Image = Resources.ResourceManager.GetObject("plugin-icon") as Image
         };
 
-        public System.Windows.Forms.Control GetView()
+        #endregion Properties
+
+        #region Methods
+
+        public Control GetView()
         {
             return Globals.View ?? (Globals.View = new Main());
         }
 
         public void Initialize()
         {
-            PacketManager.RegisterHandler(new Network.Handler.ElixirAckResponseHandler());
-            PacketManager.RegisterHandler(new Network.Handler.StoneAckResponseHandler());
-            Subscriber.AlchemySubscriber.SubscribeEvents();
+            PacketManager.RegisterHandler(new ElixirAckResponseHandler());
+            PacketManager.RegisterHandler(new StoneAckResponseHandler());
+            PacketManager.RegisterHandler(new ElixirRequestHandler());
+            PacketManager.RegisterHandler(new StoneRequestHandler());
+            PacketManager.RegisterHandler(new MaterialRequestHandler());
+            PacketManager.RegisterHandler(new SocketRequestHandler());
 
-            Globals.Botbase = new Bot.Botbase();
+            AlchemySubscriber.SubscribeEvents();
+
+            Globals.Botbase = new Botbase();
             EventManager.SubscribeEvent("OnLoadGameData", OnLoadGameData);
 
             Log.AppendFormat(LogLevel.Notify, $"[LuckyAlchemyBot] Initialized botbase");
@@ -42,7 +59,7 @@ namespace LuckyAlchemyBot
         {
             Log.AppendFormat(LogLevel.Debug, "[LuckAlchemyBot] Loading magic options...");
 
-            Globals.ReferenceManager = new Client.ReferenceManager();
+            Globals.ReferenceManager = new ReferenceManager();
             Task.Run(() => Globals.ReferenceManager.Load());
         }
 
@@ -72,5 +89,7 @@ namespace LuckyAlchemyBot
         {
             LanguageManager.Translate(GetView(), Kernel.Language);
         }
+
+        #endregion Methods
     }
 }

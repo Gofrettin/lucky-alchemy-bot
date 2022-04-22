@@ -29,22 +29,27 @@ namespace LuckyAlchemyBot.Helper
 
         public static InventoryItem GetLuckyStone(InventoryItem targetItem)
         {
-            return Game.Player.Inventory.Items.FirstOrDefault(i => i.Record.Desc1 == MagicOption.MaterialLuck && i.Record.ItemClass == targetItem.Record.Degree);
+            return GetStoneByGroup(targetItem, MagicOption.MaterialLuck);
         }
 
         public static InventoryItem GetAstralStone(InventoryItem targetItem)
         {
-            return Game.Player.Inventory.Items.FirstOrDefault(i => i.Record.Desc1 == MagicOption.MaterialAstral && i.Record.ItemClass == targetItem.Record.Degree);
+            return GetStoneByGroup(targetItem, MagicOption.MaterialAstral);
         }
 
         public static InventoryItem GetImmortalStone(InventoryItem targetItem)
         {
-            return Game.Player.Inventory.Items.FirstOrDefault(i => i.Record.Desc1 == MagicOption.MaterialImmortal && i.Record.ItemClass == targetItem.Record.Degree);
+            return GetStoneByGroup(targetItem, MagicOption.MaterialImmortal);
         }
 
         public static InventoryItem GetSteadyStone(InventoryItem targetItem)
         {
-            return Game.Player.Inventory.Items.FirstOrDefault(i => i.Record.Desc1 == MagicOption.MaterialSteady && i.Record.ItemClass == targetItem.Record.Degree);
+            return GetStoneByGroup(targetItem, MagicOption.MaterialSteady);
+        }
+
+        public static InventoryItem GetStoneByGroup(InventoryItem targetItem, string name)
+        {
+            return Game.Player.Inventory.Items.FirstOrDefault(i => i.Record.Desc1 == name && i.Record.ItemClass == targetItem.Record.Degree);
         }
 
         public static bool HasMagicOption(InventoryItem inventoryItem, string materialGroup)

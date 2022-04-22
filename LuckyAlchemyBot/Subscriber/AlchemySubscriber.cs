@@ -5,6 +5,9 @@ using System;
 
 namespace LuckyAlchemyBot.Subscriber
 {
+    /// <summary>
+    /// Fixes the updates of inventory items during alchemy. The core does not handle this (yet)
+    /// </summary>
     internal static class AlchemySubscriber
     {
         public static void SubscribeEvents()

@@ -17,7 +17,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\..\Build\Bots\</OutputPath>
+    <OutputPath>..\..\..\SDClowen\RSBot\Build\Bots\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -47,13 +47,24 @@
     <Compile Include="Bot\EnhancementConfig.cs" />
     <Compile Include="Bot\Enhancer.cs" />
     <Compile Include="Bot\MagicOptionGranter.cs" />
+    <Compile Include="Bot\MagicOptionsConfig.cs" />
     <Compile Include="Client\ReferenceManager.cs" />
     <Compile Include="Client\ReferenceObjects\MagicOption.cs" />
+    <Compile Include="Client\ReferenceObjects\MagicOptionAssignment.cs" />
     <Compile Include="Globals.cs" />
     <Compile Include="Helper\AlchemyItemHelper.cs" />
+    <Compile Include="Helper\RefItemExtensions.cs" />
+    <Compile Include="Helper\RequestHelper.cs" />
     <Compile Include="LuckyAlchemyBot.cs" />
+    <Compile Include="Network\Handler\FuseRequestHelper.cs" />
+    <Compile Include="Network\Handler\MaterialRequestHandler.cs" />
+    <Compile Include="Network\Handler\SocketRequestHandler.cs" />
+    <Compile Include="Network\Handler\StoneRequestHandler.cs" />
+    <Compile Include="Network\Handler\ElixirRequestHandler.cs" />
     <Compile Include="Network\Handler\StoneAckResponseHandler.cs" />
     <Compile Include="Network\Handler\ElixirAckResponseHandler.cs" />
+    <Compile Include="Objects\Enums.cs" />
+    <Compile Include="Objects\ItemVariance.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -74,6 +85,12 @@
     <Compile Include="Views\Settings\EnhanceSettingsView.Designer.cs">
       <DependentUpon>EnhanceSettingsView.cs</DependentUpon>
     </Compile>
+    <Compile Include="Views\Settings\MagicOptionsSettingsView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Views\Settings\MagicOptionsSettingsView.Designer.cs">
+      <DependentUpon>MagicOptionsSettingsView.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -86,9 +103,12 @@
     <EmbeddedResource Include="Views\Settings\EnhanceSettingsView.resx">
       <DependentUpon>EnhanceSettingsView.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Views\Settings\MagicOptionsSettingsView.resx">
+      <DependentUpon>MagicOptionsSettingsView.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Library\RSBot.Core\RSBot.Core.csproj">
+    <ProjectReference Include="..\..\..\SDClowen\RSBot\Library\RSBot.Core\RSBot.Core.csproj">
       <Project>{84323c14-eb9f-44d9-8980-89c9f82db4ee}</Project>
       <Name>RSBot.Core</Name>
       <Private>False</Private>

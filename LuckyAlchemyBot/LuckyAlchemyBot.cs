@@ -1,23 +1,23 @@
 ﻿using LuckyAlchemyBot.Bot;
-using LuckyAlchemyBot.Client;
-using LuckyAlchemyBot.Network.Handler;
+
 using LuckyAlchemyBot.Properties;
-using LuckyAlchemyBot.Subscriber;
 using LuckyAlchemyBot.Views;
 using RSBot.Core;
-using RSBot.Core.Event;
-using RSBot.Core.Network;
 using RSBot.Core.Plugins;
 using System;
 using System.Drawing;
-using System.Threading.Tasks;
 using System.Windows.Forms;
+using LuckyAlchemyBot.Subscriber;
 
 namespace LuckyAlchemyBot
 {
     public class LuckyAlchemyBot : IBotbase
     {
         #region Properties
+
+        public static string Name => "LuckyAlchemyBot";
+
+        public static bool IsActive => Kernel.Bot != null && Kernel.Bot.Running && Kernel.Bot.Botbase.Info.Name == Name;
 
         public static Version Version => new Version("0.1.0");
 
@@ -40,27 +40,10 @@ namespace LuckyAlchemyBot
 
         public void Initialize()
         {
-            PacketManager.RegisterHandler(new ElixirAckResponseHandler());
-            PacketManager.RegisterHandler(new StoneAckResponseHandler());
-            PacketManager.RegisterHandler(new ElixirRequestHandler());
-            PacketManager.RegisterHandler(new StoneRequestHandler());
-            PacketManager.RegisterHandler(new MaterialRequestHandler());
-            PacketManager.RegisterHandler(new SocketRequestHandler());
-
-            AlchemySubscriber.SubscribeEvents();
-
+            AlchemyEventsSubscriber.Subscribe();
             Globals.Botbase = new Botbase();
-            EventManager.SubscribeEvent("OnLoadGameData", OnLoadGameData);
 
             Log.AppendFormat(LogLevel.Notify, $"[LuckyAlchemyBot] Initialized botbase");
-        }
-
-        public void OnLoadGameData()
-        {
-            Log.AppendFormat(LogLevel.Debug, "[LuckAlchemyBot] Loading magic options...");
-
-            Globals.ReferenceManager = new ReferenceManager();
-            Task.Run(() => Globals.ReferenceManager.Load());
         }
 
         public void Start()

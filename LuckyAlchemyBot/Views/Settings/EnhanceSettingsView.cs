@@ -53,8 +53,10 @@ namespace LuckyAlchemyBot.Views.Settings
         /// </summary>
         private void SubscribeMainFormEvents()
         {
-            if (Globals.View != null)
-                Globals.View.ItemChanged += View_ItemChanged;
+            if (Globals.View == null) return;
+
+            Globals.View.EngineChanged += View_EngineChanged;
+            Globals.View.ItemChanged += View_ItemChanged;
         }
 
         /// <summary>
@@ -132,6 +134,11 @@ namespace LuckyAlchemyBot.Views.Settings
         #endregion Methods
 
         #region Events
+
+        private void View_EngineChanged(InventoryItem item, Engine engine)
+        {
+            PopulateView();
+        }
 
         /// <summary>
         /// Will be triggered when the user click on the refresh link

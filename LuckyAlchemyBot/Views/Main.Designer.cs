@@ -1,4 +1,15 @@
-﻿namespace LuckyAlchemyBot.Views
+﻿using System.Windows.Forms;
+
+
+using ComboBox = SDUI.Controls.ComboBox;
+using GroupBox = SDUI.Controls.GroupBox;
+using Label = SDUI.Controls.Label;
+using ListView = SDUI.Controls.ListView;
+using TabControl = SDUI.Controls.TabControl;
+using Panel = SDUI.Controls.Panel;
+using RadioButton = SDUI.Controls.Radio;
+
+namespace LuckyAlchemyBot.Views
 {
     partial class Main
     {
@@ -28,32 +39,32 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.lblOptLevel = new System.Windows.Forms.Label();
-            this.comboItem = new System.Windows.Forms.ComboBox();
-            this.lblOptLevelText = new System.Windows.Forms.Label();
-            this.lblItemSelection = new System.Windows.Forms.Label();
-            this.lblDegree = new System.Windows.Forms.Label();
-            this.lblDegreeText = new System.Windows.Forms.Label();
-            this.linkRefreshItemList = new System.Windows.Forms.Label();
-            this.lvLog = new System.Windows.Forms.ListView();
+            this.groupItem = new SDUI.Controls.GroupBox();
+            this.lblOptLevel = new SDUI.Controls.Label();
+            this.comboItem = new SDUI.Controls.ComboBox();
+            this.lblOptLevelText = new SDUI.Controls.Label();
+            this.lblItemSelection = new SDUI.Controls.Label();
+            this.lblDegree = new SDUI.Controls.Label();
+            this.lblDegreeText = new SDUI.Controls.Label();
+            this.linkRefreshItemList = new SDUI.Controls.Label();
+            this.lvLog = new SDUI.Controls.ListView();
             this.colItem = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.colSuccess = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.colResult = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.lblCopyright = new System.Windows.Forms.Label();
-            this.tabControlItemInfo = new RSBot.Theme.Controls.TabControl();
+            this.lblCopyright = new SDUI.Controls.Label();
+            this.tabControlItemInfo = new SDUI.Controls.TabControl();
             this.tabMagicOptions = new System.Windows.Forms.TabPage();
             this.listMagicOptions = new System.Windows.Forms.ListBox();
             this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.lblUnsupported = new System.Windows.Forms.Label();
+            this.lblUnsupported = new SDUI.Controls.Label();
             this.listAttributes = new System.Windows.Forms.ListBox();
             this.linkGithub = new System.Windows.Forms.LinkLabel();
-            this.panelSettingsGroup = new System.Windows.Forms.Panel();
-            this.panelSettings = new System.Windows.Forms.Panel();
-            this.panel2 = new System.Windows.Forms.Panel();
-            this.radioMagicOptions = new System.Windows.Forms.RadioButton();
-            this.radioEnhance = new System.Windows.Forms.RadioButton();
-            this.groupBox1.SuspendLayout();
+            this.panelSettingsGroup = new SDUI.Controls.Panel();
+            this.panelSettings = new SDUI.Controls.Panel();
+            this.panel2 = new SDUI.Controls.Panel();
+            this.radioMagicOptions = new SDUI.Controls.Radio();
+            this.radioEnhance = new SDUI.Controls.Radio();
+            this.groupItem.SuspendLayout();
             this.tabControlItemInfo.SuspendLayout();
             this.tabMagicOptions.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -61,21 +72,24 @@
             this.panel2.SuspendLayout();
             this.SuspendLayout();
             // 
-            // groupBox1
+            // groupItem
             // 
-            this.groupBox1.Controls.Add(this.lblOptLevel);
-            this.groupBox1.Controls.Add(this.comboItem);
-            this.groupBox1.Controls.Add(this.lblOptLevelText);
-            this.groupBox1.Controls.Add(this.lblItemSelection);
-            this.groupBox1.Controls.Add(this.lblDegree);
-            this.groupBox1.Controls.Add(this.lblDegreeText);
-            this.groupBox1.Controls.Add(this.linkRefreshItemList);
-            this.groupBox1.Location = new System.Drawing.Point(14, 12);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(276, 123);
-            this.groupBox1.TabIndex = 0;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Item selection";
+            this.groupItem.BackColor = System.Drawing.Color.Transparent;
+            this.groupItem.Controls.Add(this.lblOptLevel);
+            this.groupItem.Controls.Add(this.comboItem);
+            this.groupItem.Controls.Add(this.lblOptLevelText);
+            this.groupItem.Controls.Add(this.lblItemSelection);
+            this.groupItem.Controls.Add(this.lblDegree);
+            this.groupItem.Controls.Add(this.lblDegreeText);
+            this.groupItem.Controls.Add(this.linkRefreshItemList);
+            this.groupItem.Location = new System.Drawing.Point(14, 12);
+            this.groupItem.Name = "groupItem";
+            this.groupItem.Padding = new System.Windows.Forms.Padding(3, 10, 3, 3);
+            this.groupItem.Radius = 2;
+            this.groupItem.Size = new System.Drawing.Size(276, 123);
+            this.groupItem.TabIndex = 0;
+            this.groupItem.TabStop = false;
+            this.groupItem.Text = "Item selection";
             // 
             // lblOptLevel
             // 
@@ -89,11 +103,16 @@
             // 
             // comboItem
             // 
+            this.comboItem.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.comboItem.DropDownHeight = 100;
             this.comboItem.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboItem.FormattingEnabled = true;
+            this.comboItem.IntegralHeight = false;
+            this.comboItem.ItemHeight = 17;
             this.comboItem.Location = new System.Drawing.Point(18, 41);
             this.comboItem.Name = "comboItem";
-            this.comboItem.Size = new System.Drawing.Size(219, 21);
+            this.comboItem.Size = new System.Drawing.Size(219, 23);
+            this.comboItem.StartIndex = 0;
             this.comboItem.TabIndex = 4;
             this.comboItem.SelectedIndexChanged += new System.EventHandler(this.comboItem_SelectedIndexChanged);
             // 
@@ -157,7 +176,7 @@
             this.lvLog.HideSelection = false;
             this.lvLog.Location = new System.Drawing.Point(14, 324);
             this.lvLog.Name = "lvLog";
-            this.lvLog.Size = new System.Drawing.Size(734, 163);
+            this.lvLog.Size = new System.Drawing.Size(734, 145);
             this.lvLog.TabIndex = 1;
             this.lvLog.UseCompatibleStateImageBehavior = false;
             this.lvLog.View = System.Windows.Forms.View.Details;
@@ -181,7 +200,7 @@
             // 
             this.lblCopyright.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.lblCopyright.AutoSize = true;
-            this.lblCopyright.Location = new System.Drawing.Point(307, 490);
+            this.lblCopyright.Location = new System.Drawing.Point(307, 472);
             this.lblCopyright.Name = "lblCopyright";
             this.lblCopyright.Size = new System.Drawing.Size(188, 13);
             this.lblCopyright.TabIndex = 4;
@@ -189,6 +208,7 @@
             // 
             // tabControlItemInfo
             // 
+            this.tabControlItemInfo.Border = new System.Windows.Forms.Padding(1);
             this.tabControlItemInfo.Controls.Add(this.tabMagicOptions);
             this.tabControlItemInfo.Controls.Add(this.tabPage2);
             this.tabControlItemInfo.Location = new System.Drawing.Point(14, 141);
@@ -199,6 +219,7 @@
             // 
             // tabMagicOptions
             // 
+            this.tabMagicOptions.BackColor = System.Drawing.Color.White;
             this.tabMagicOptions.Controls.Add(this.listMagicOptions);
             this.tabMagicOptions.Location = new System.Drawing.Point(4, 25);
             this.tabMagicOptions.Name = "tabMagicOptions";
@@ -206,7 +227,6 @@
             this.tabMagicOptions.Size = new System.Drawing.Size(268, 145);
             this.tabMagicOptions.TabIndex = 0;
             this.tabMagicOptions.Text = "Magic options";
-            this.tabMagicOptions.UseVisualStyleBackColor = true;
             // 
             // listMagicOptions
             // 
@@ -219,6 +239,7 @@
             // 
             // tabPage2
             // 
+            this.tabPage2.BackColor = System.Drawing.Color.White;
             this.tabPage2.Controls.Add(this.lblUnsupported);
             this.tabPage2.Controls.Add(this.listAttributes);
             this.tabPage2.Location = new System.Drawing.Point(4, 25);
@@ -227,7 +248,6 @@
             this.tabPage2.Size = new System.Drawing.Size(268, 145);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Attributes";
-            this.tabPage2.UseVisualStyleBackColor = true;
             // 
             // lblUnsupported
             // 
@@ -251,64 +271,65 @@
             // linkGithub
             // 
             this.linkGithub.AutoSize = true;
-            this.linkGithub.Location = new System.Drawing.Point(704, 490);
+            this.linkGithub.Location = new System.Drawing.Point(704, 471);
             this.linkGithub.Name = "linkGithub";
             this.linkGithub.Size = new System.Drawing.Size(44, 13);
             this.linkGithub.TabIndex = 6;
             this.linkGithub.TabStop = true;
             this.linkGithub.Text = "GitHub";
+            this.linkGithub.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkGithub_LinkClicked);
             // 
             // panelSettingsGroup
             // 
+            this.panelSettingsGroup.Border = new System.Windows.Forms.Padding(0, 0, 0, 0);
             this.panelSettingsGroup.Controls.Add(this.panelSettings);
             this.panelSettingsGroup.Controls.Add(this.panel2);
             this.panelSettingsGroup.Location = new System.Drawing.Point(310, 12);
             this.panelSettingsGroup.Name = "panelSettingsGroup";
+            this.panelSettingsGroup.Radius = 1;
             this.panelSettingsGroup.Size = new System.Drawing.Size(438, 303);
             this.panelSettingsGroup.TabIndex = 7;
             // 
             // panelSettings
             // 
+            this.panelSettings.Border = new System.Windows.Forms.Padding(0, 0, 0, 0);
             this.panelSettings.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panelSettings.Location = new System.Drawing.Point(0, 38);
             this.panelSettings.Name = "panelSettings";
+            this.panelSettings.Radius = 1;
             this.panelSettings.Size = new System.Drawing.Size(438, 265);
             this.panelSettings.TabIndex = 1;
             // 
             // panel2
             // 
+            this.panel2.Border = new System.Windows.Forms.Padding(0, 0, 0, 0);
             this.panel2.Controls.Add(this.radioMagicOptions);
             this.panel2.Controls.Add(this.radioEnhance);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel2.Location = new System.Drawing.Point(0, 0);
             this.panel2.Name = "panel2";
+            this.panel2.Radius = 1;
             this.panel2.Size = new System.Drawing.Size(438, 38);
             this.panel2.TabIndex = 0;
             // 
             // radioMagicOptions
             // 
-            this.radioMagicOptions.Appearance = System.Windows.Forms.Appearance.Button;
-            this.radioMagicOptions.AutoSize = true;
-            this.radioMagicOptions.Location = new System.Drawing.Point(93, 7);
+            this.radioMagicOptions.Checked = false;
+            this.radioMagicOptions.Location = new System.Drawing.Point(121, 7);
             this.radioMagicOptions.Name = "radioMagicOptions";
-            this.radioMagicOptions.Size = new System.Drawing.Size(86, 23);
+            this.radioMagicOptions.Size = new System.Drawing.Size(114, 23);
             this.radioMagicOptions.TabIndex = 1;
             this.radioMagicOptions.Text = "Mag. options";
-            this.radioMagicOptions.UseVisualStyleBackColor = true;
             this.radioMagicOptions.CheckedChanged += new System.EventHandler(this.radioEngine_CheckedChanged);
             // 
             // radioEnhance
             // 
-            this.radioEnhance.Appearance = System.Windows.Forms.Appearance.Button;
-            this.radioEnhance.AutoSize = true;
             this.radioEnhance.Checked = true;
             this.radioEnhance.Location = new System.Drawing.Point(9, 7);
             this.radioEnhance.Name = "radioEnhance";
-            this.radioEnhance.Size = new System.Drawing.Size(78, 23);
+            this.radioEnhance.Size = new System.Drawing.Size(106, 23);
             this.radioEnhance.TabIndex = 0;
-            this.radioEnhance.TabStop = true;
             this.radioEnhance.Text = "Enhance (+)";
-            this.radioEnhance.UseVisualStyleBackColor = true;
             this.radioEnhance.CheckedChanged += new System.EventHandler(this.radioEngine_CheckedChanged);
             // 
             // Main
@@ -319,13 +340,13 @@
             this.Controls.Add(this.linkGithub);
             this.Controls.Add(this.tabControlItemInfo);
             this.Controls.Add(this.lvLog);
-            this.Controls.Add(this.groupBox1);
+            this.Controls.Add(this.groupItem);
             this.Controls.Add(this.lblCopyright);
             this.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Name = "Main";
-            this.Size = new System.Drawing.Size(765, 505);
-            this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
+            this.Size = new System.Drawing.Size(765, 491);
+            this.groupItem.ResumeLayout(false);
+            this.groupItem.PerformLayout();
             this.tabControlItemInfo.ResumeLayout(false);
             this.tabMagicOptions.ResumeLayout(false);
             this.tabPage2.ResumeLayout(false);
@@ -340,30 +361,30 @@
 
         #endregion
 
-        private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.Label linkRefreshItemList;
-        private System.Windows.Forms.ComboBox comboItem;
-        private System.Windows.Forms.ListView lvLog;
+        private GroupBox groupItem;
+        private Label linkRefreshItemList;
+        private ComboBox comboItem;
+        private ListView lvLog;
         private System.Windows.Forms.ColumnHeader colItem;
         private System.Windows.Forms.ColumnHeader colSuccess;
         private System.Windows.Forms.ColumnHeader colResult;
-        private System.Windows.Forms.Label lblOptLevelText;
-        private System.Windows.Forms.Label lblDegree;
-        private System.Windows.Forms.Label lblDegreeText;
-        private System.Windows.Forms.Label lblOptLevel;
-        private System.Windows.Forms.ListBox listMagicOptions;
-        private System.Windows.Forms.Label lblCopyright;
-        private RSBot.Theme.Controls.TabControl tabControlItemInfo;
-        private System.Windows.Forms.TabPage tabPage2;
-        private System.Windows.Forms.TabPage tabMagicOptions;
-        private System.Windows.Forms.Label lblItemSelection;
-        private System.Windows.Forms.ListBox listAttributes;
-        private System.Windows.Forms.Label lblUnsupported;
-        private System.Windows.Forms.LinkLabel linkGithub;
-        private System.Windows.Forms.Panel panelSettingsGroup;
-        private System.Windows.Forms.Panel panel2;
-        private System.Windows.Forms.RadioButton radioEnhance;
-        private System.Windows.Forms.RadioButton radioMagicOptions;
-        private System.Windows.Forms.Panel panelSettings;
+        private Label lblOptLevelText;
+        private Label lblDegree;
+        private Label lblDegreeText;
+        private Label lblOptLevel;
+        private ListBox listMagicOptions;
+        private Label lblCopyright;
+        private TabControl tabControlItemInfo;
+        private TabPage tabPage2;
+        private TabPage tabMagicOptions;
+        private Label lblItemSelection;
+        private ListBox listAttributes;
+        private Label lblUnsupported;
+        private LinkLabel linkGithub;
+        private Panel panelSettingsGroup;
+        private Panel panel2;
+        private RadioButton radioEnhance;
+        private RadioButton radioMagicOptions;
+        private Panel panelSettings;
     }
 }

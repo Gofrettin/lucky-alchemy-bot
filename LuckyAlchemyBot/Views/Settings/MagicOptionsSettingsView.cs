@@ -1,4 +1,6 @@
 ﻿using LuckyAlchemyBot.Client.ReferenceObjects;
+using RSBot.Core;
+using RSBot.Core.Client.ReferenceObjects;
 using RSBot.Core.Event;
 using RSBot.Core.Objects;
 using RSBot.Core.Objects.Item;
@@ -13,7 +15,7 @@ namespace LuckyAlchemyBot.Views.Settings
         private class MagicStoneListViewItemTag
         {
             public InventoryItem Item { get; set; }
-            public MagicOption MagicOption { get; set; }
+            public RefMagicOpt MagicOption { get; set; }
 
             public MagicOptionInfo MagicOptionInfo { get; set; }
         }
@@ -39,13 +41,22 @@ namespace LuckyAlchemyBot.Views.Settings
         #endregion Constructor
 
         #region Events
+
         /// <summary>
         /// Subscribes to the ItemChanged event
         /// </summary>
         private void SubscribeMainFormEvents()
         {
             if (Globals.View != null)
+            {
                 Globals.View.ItemChanged += View_ItemChanged;
+                Globals.View.EngineChanged += View_EngineChanged;
+            }
+        }
+
+        private void View_EngineChanged(InventoryItem item, Bot.Engine engine)
+        {
+            PopulateListView();
         }
 
         /// <summary>
@@ -71,6 +82,9 @@ namespace LuckyAlchemyBot.Views.Settings
 
         #region Methods
 
+        /// <summary>
+        /// Populate the list view of available magic options for the selected item
+        /// </summary>
         public void PopulateListView()
         {
             if (Globals.View.SelectedItem == null) return;
@@ -80,51 +94,45 @@ namespace LuckyAlchemyBot.Views.Settings
             _reloadConfig = false;
 
             var selectedItem = Globals.View.SelectedItem;
-            var assignments = Globals.ReferenceManager.GetAssignments(selectedItem.Record.TypeID3, selectedItem.Record.TypeID4);
+            var assignments = Game.ReferenceManager.GetAssignments(selectedItem.Record.TypeID3, selectedItem.Record.TypeID4);
             foreach (var assignment in assignments)
             {
                 if (assignment == null) continue;
-                var matchingItem = Helper.AlchemyItemHelper.GetStoneByGroup(selectedItem, assignment.Group);
 
-                //if (matchingItem == null) continue;
+                var matchingItem = Helper.AlchemyItemHelper.GetStoneByGroup(selectedItem, assignment.Group);
+                if (matchingItem == null) continue;
 
                 MagicOptionInfo current = null;
-                MagicOption currentRecord = null;
-                foreach (var magicOption in selectedItem.MagicOptions)
-                {
-                    var record = Globals.ReferenceManager.GetMagicOption(magicOption.Id);
-                    if (record.Group == assignment.Group)
+                RefMagicOpt currentRecord = null;
+                if (selectedItem.MagicOptions != null)
+                    foreach (var magicOption in selectedItem.MagicOptions)
                     {
-                        currentRecord = record;
-                        current = magicOption;
+                        var record = Game.ReferenceManager.GetMagicOption(magicOption.Id);
+                        if (record == null || record.Group != assignment.Group) continue;
 
+                        current = magicOption;
+                        currentRecord = record;
                         break;
                     }
-                }
 
-                var hasMax = currentRecord != null ? currentRecord.GetMaxValue() == current.Value : false;
+                var hasMax = currentRecord != null && currentRecord.GetMaxValue() <= current.Value;
+                if (hasMax) continue;
 
-                if (hasMax || matchingItem == null)
-                    continue;
+                var item = new ListViewItem(assignment.GetGroupTranslation())
+                {
+                    Tag = new MagicStoneListViewItemTag { Item = matchingItem, MagicOption = assignment, MagicOptionInfo = current }
+                };
 
-                var item = new ListViewItem(assignment.GetGroupTranslation());
-
-                if (current == null)
-                    item.SubItems.Add("0");
-                else
-                    item.SubItems.Add(current.Value.ToString());
-
-                item.Tag = new MagicStoneListViewItemTag { Item = matchingItem, MagicOption = currentRecord, MagicOptionInfo = current };
-                item.SubItems.Add(Globals.ReferenceManager.GetMagicOption(assignment.Group, (byte)selectedItem.Record.Degree)?.GetMaxValue().ToString());
+                item.SubItems.Add(current == null ? "0" : current.Value.ToString());
+                item.SubItems.Add(Game.ReferenceManager.GetMagicOption(assignment.Group, (byte)selectedItem.Record.Degree)?.GetMaxValue().ToString());
                 item.SubItems.Add($"{matchingItem?.Amount}");
 
-                if (!hasMax && matchingItem != null && Globals.Botbase.MagicOptionsConfig != null && Globals.Botbase.MagicOptionsConfig.MagicStones.Keys.Contains(matchingItem))
+                if (Globals.Botbase.MagicOptionsConfig != null && Globals.Botbase.MagicOptionsConfig.MagicStones.Keys.Contains(matchingItem))
                     item.Checked = true;
                 else
                     item.Checked = false;
 
-                if (!hasMax && matchingItem != null)
-                    item.Font = new Font(Font, FontStyle.Bold);
+                item.Font = new Font(Font, FontStyle.Bold);
 
                 lvMagicOptions.Items.Add(item);
             }
@@ -136,6 +144,9 @@ namespace LuckyAlchemyBot.Views.Settings
             ReloadConfig();
         }
 
+        /// <summary>
+        /// Reloads the configuration with the new selection of magic options
+        /// </summary>
         private void ReloadConfig()
         {
             if (!_reloadConfig) return;
@@ -143,7 +154,7 @@ namespace LuckyAlchemyBot.Views.Settings
             Globals.Botbase.MagicOptionsConfig = new Bot.MagicOptionsConfig
             {
                 Item = Globals.View.SelectedItem,
-                MagicStones = new System.Collections.Generic.Dictionary<InventoryItem, MagicOption>()
+                MagicStones = new System.Collections.Generic.Dictionary<InventoryItem, RefMagicOpt>()
             };
 
             foreach (ListViewItem item in lvMagicOptions.CheckedItems)

@@ -1,4 +1,7 @@
-﻿using RSBot.Core;
+﻿using LuckyAlchemyBot.Bot;
+using LuckyAlchemyBot.Client.ReferenceObjects;
+using RSBot.Core;
+using RSBot.Core.Client.ReferenceObjects;
 using RSBot.Core.Event;
 using RSBot.Core.Objects;
 using System;
@@ -29,12 +32,16 @@ namespace LuckyAlchemyBot.Views
         #region Delegates
 
         /// <param name="item">The item that has been selected</param>
-        public delegate void SelectedItemChanged(InventoryItem item);
+        internal delegate void SelectedItemChanged(InventoryItem item);
 
         /// <summary>
         /// Will be triggered if the inventory item changes
         /// </summary>
-        public event SelectedItemChanged ItemChanged;
+        internal event SelectedItemChanged ItemChanged;
+
+        internal delegate void SelectedEngineChanged(InventoryItem item, Engine engine);
+
+        internal event SelectedEngineChanged EngineChanged;
 
         #endregion Delegates
 
@@ -59,14 +66,13 @@ namespace LuckyAlchemyBot.Views
         {
             InitializeComponent();
 
-            lblCopyright.Text = $"LuckyAlchemyBot v{LuckyAlchemyBot.Version} © 2022 wimbeam";
+            lblCopyright.Text = $@"LuckyAlchemyBot v{LuckyAlchemyBot.Version} © 2022 Wimbeam";
 
             EventManager.SubscribeEvent("OnLoadCharacter", ReloadItemList);
-            EventManager.SubscribeEvent("OnElixirAlchemy", ReloadItemList);
-            EventManager.SubscribeEvent("OnStoneAlchemy", ReloadItemList);
+            EventManager.SubscribeEvent("OnAlchemy", new Action<AlchemyType>(OnAlchemy));
 
             _enhanceSettingsView = new Settings.EnhanceSettingsView { Visible = true, Dock = DockStyle.Fill };
-            _magicOptionsSettingsView = new Settings.MagicOptionsSettingsView() { Visible = false, Dock = DockStyle.Fill };
+            _magicOptionsSettingsView = new Settings.MagicOptionsSettingsView { Visible = false, Dock = DockStyle.Fill };
 
             panelSettings.Controls.Add(_enhanceSettingsView);
             panelSettings.Controls.Add(_magicOptionsSettingsView);
@@ -75,6 +81,11 @@ namespace LuckyAlchemyBot.Views
         #endregion Constructor
 
         #region Methods
+
+        private void OnAlchemy(AlchemyType type)
+        {
+            ReloadItemList();
+        }
 
         /// <summary>
         /// Reloads the list of inventory items that can be used for alchemy actions.
@@ -152,10 +163,10 @@ namespace LuckyAlchemyBot.Views
         /// <param name="name">Name of the translation</param>
         /// <returns></returns>
 
-        private string GetTranslation(string name)
-        {
-            return Game.ReferenceManager.GetTranslation(name);
-        }
+        //private string GetTranslation(string name)
+        //{
+        //    return Game.ReferenceManager.GetTranslation(name);
+        //}
 
         /// <summary>
         /// Populates the list of magic options of the selected item
@@ -165,16 +176,34 @@ namespace LuckyAlchemyBot.Views
         {
             listMagicOptions.Items.Clear();
 
-            if (item.MagicOptions != null)
-                foreach (var magicOption in item.MagicOptions)
-                {
-                    var option = Globals.ReferenceManager.GetMagicOption(magicOption.Id);
+            if (item.MagicOptions == null) return;
 
-                    if (option != null)
-                    {
-                        listMagicOptions.Items.Add(option.GetFusingTranslation(magicOption.Value));
-                    }
-                }
+            foreach (var magicOption in item.MagicOptions)
+            {
+                var option = Game.ReferenceManager.GetMagicOption(magicOption.Id);
+
+                if (option != null)
+                    listMagicOptions.Items.Add(option.GetFusingTranslation(magicOption.Value));
+            }
+        }
+
+        /// <summary>
+        /// Adds a new log message to the alchemy log listview
+        /// </summary>
+        /// <param name="itemName"></param>
+        /// <param name="success"></param>
+        /// <param name="message"></param>
+        public void AddLog(string itemName, bool success, string message)
+        {
+            var item = new ListViewItem(itemName);
+
+            item.SubItems.Add(success ? "Success" : "Fail");
+            item.SubItems.Add(message);
+
+            lvLog.Items.Add(item);
+
+            //Scroll to bottom of the list
+            lvLog.Items[lvLog.Items.Count - 1].EnsureVisible();
         }
 
         #endregion Methods
@@ -199,9 +228,10 @@ namespace LuckyAlchemyBot.Views
         private void comboItem_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (comboItem.SelectedIndex < 0) return;
-
             var selectedItem = (InventoryItemComboboxItem)comboItem.Items[comboItem.SelectedIndex];
             SelectedItem = selectedItem.InventoryItem;
+
+            if (SelectedItem == null) return;
 
             //PopulateAttributes(SelectedItem);
             PopulateMagicOptions(SelectedItem);
@@ -218,53 +248,35 @@ namespace LuckyAlchemyBot.Views
         /// <param name="e"></param>
         private void radioEngine_CheckedChanged(object sender, EventArgs e)
         {
-            Kernel.Bot.Botbase.Stop();
-
             if (radioEnhance.Checked)
-                LoadEngineSettings(Bot.Engine.Enhancement);
+                LoadEngineSettings(Engine.Enhancement);
 
             if (radioMagicOptions.Checked)
-                LoadEngineSettings(Bot.Engine.Magic);
+                LoadEngineSettings(Engine.Magic);
         }
 
         /// <summary>
         /// Reloads the engine settings depending on the selected engine
         /// </summary>
         /// <param name="engine">The engine to load the settings for</param>
-        private void LoadEngineSettings(Bot.Engine engine)
+        private void LoadEngineSettings(Engine engine)
         {
-            if (Globals.Botbase != null)
+            EngineChanged?.Invoke(SelectedItem, engine);
+
+            if (Globals.Botbase != null && !Kernel.Bot.Running)
                 Globals.Botbase.Engine = engine;
 
-            if (engine == Bot.Engine.Enhancement)
+            if (engine == Engine.Enhancement)
             {
                 _enhanceSettingsView.Show();
                 _magicOptionsSettingsView.Hide();
             }
 
-            if (engine == Bot.Engine.Magic)
+            if (engine == Engine.Magic)
             {
                 _enhanceSettingsView.Hide();
                 _magicOptionsSettingsView.Show();
             }
-        }
-
-        /// <summary>
-        /// Adds a new log message to the alchemy log listview
-        /// </summary>
-        /// <param name="itemName"></param>
-        /// <param name="success"></param>
-        /// <param name="message"></param>
-        public void AddLog(string itemName, bool success, string message)
-        {
-            var item = new ListViewItem(itemName);
-
-            item.SubItems.Add(success ? "Success" : "Fail");
-            item.SubItems.Add(message);
-
-            lvLog.Items.Add(item);
-            //Scroll to bottom of the list
-            lvLog.Items[lvLog.Items.Count - 1].EnsureVisible();
         }
 
         /// <summary>

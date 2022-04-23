@@ -1,4 +1,4 @@
-﻿using LuckyAlchemyBot.Client.ReferenceObjects;
+﻿using RSBot.Core.Client.ReferenceObjects;
 using RSBot.Core.Objects;
 using System.Collections.Generic;
 
@@ -16,7 +16,7 @@ namespace LuckyAlchemyBot.Bot
         /// <summary>
         /// Gets or sets a dictionary of inventory items and the referenced magic option
         /// </summary>
-        public Dictionary<InventoryItem, MagicOption> MagicStones { get; set; }
+        public Dictionary<InventoryItem, RefMagicOpt> MagicStones { get; set; }
 
         #endregion Properties
     }

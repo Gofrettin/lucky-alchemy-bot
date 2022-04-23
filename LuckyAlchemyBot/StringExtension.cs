@@ -4,6 +4,8 @@ namespace LuckyAlchemyBot
 {
     internal static class StringExtension
     {
+        #region Methods
+
         public static string JoymaxFormat<T1>(this string unformatted, T1 valA)
         {
             var stringBulder = new StringBuilder(unformatted);
@@ -36,5 +38,7 @@ namespace LuckyAlchemyBot
 
             return stringBulder.ToString();
         }
+
+        #endregion Methods
     }
 }

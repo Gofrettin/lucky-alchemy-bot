@@ -9,9 +9,10 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>LuckyAlchemyBot</RootNamespace>
     <AssemblyName>LuckyAlchemyBot</AssemblyName>
-    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -48,22 +49,12 @@
     <Compile Include="Bot\Enhancer.cs" />
     <Compile Include="Bot\MagicOptionGranter.cs" />
     <Compile Include="Bot\MagicOptionsConfig.cs" />
-    <Compile Include="Client\ReferenceManager.cs" />
-    <Compile Include="Client\ReferenceObjects\MagicOption.cs" />
-    <Compile Include="Client\ReferenceObjects\MagicOptionAssignment.cs" />
+    <Compile Include="Client\ReferenceObjects\RefMagicOptExtension.cs" />
     <Compile Include="Globals.cs" />
     <Compile Include="Helper\AlchemyItemHelper.cs" />
     <Compile Include="Helper\RefItemExtensions.cs" />
     <Compile Include="Helper\RequestHelper.cs" />
     <Compile Include="LuckyAlchemyBot.cs" />
-    <Compile Include="Network\Handler\FuseRequestHelper.cs" />
-    <Compile Include="Network\Handler\MaterialRequestHandler.cs" />
-    <Compile Include="Network\Handler\SocketRequestHandler.cs" />
-    <Compile Include="Network\Handler\StoneRequestHandler.cs" />
-    <Compile Include="Network\Handler\ElixirRequestHandler.cs" />
-    <Compile Include="Network\Handler\StoneAckResponseHandler.cs" />
-    <Compile Include="Network\Handler\ElixirAckResponseHandler.cs" />
-    <Compile Include="Objects\Enums.cs" />
     <Compile Include="Objects\ItemVariance.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
@@ -72,7 +63,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="StringExtension.cs" />
-    <Compile Include="Subscriber\AlchemySubscriber.cs" />
+    <Compile Include="Subscriber\AlchemyEventsSubscriber.cs" />
     <Compile Include="Views\Main.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -108,15 +99,18 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\flask.png" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\..\..\SDClowen\RSBot\Library\RSBot.Core\RSBot.Core.csproj">
       <Project>{84323c14-eb9f-44d9-8980-89c9f82db4ee}</Project>
       <Name>RSBot.Core</Name>
       <Private>False</Private>
     </ProjectReference>
+    <ProjectReference Include="..\..\..\SDClowen\RSBot\SDUI\SDUI\SDUI.csproj">
+      <Project>{38b06e05-d80d-4e99-9f62-8b3af0b7ac53}</Project>
+      <Name>SDUI</Name>
+    </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\flask.png" />
-  </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

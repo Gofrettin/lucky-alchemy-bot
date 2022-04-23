@@ -1,13 +1,12 @@
-﻿using LuckyAlchemyBot.Client.ReferenceObjects;
-using LuckyAlchemyBot.Helper;
-using LuckyAlchemyBot.Network.Handler;
-using LuckyAlchemyBot.Objects;
+﻿using LuckyAlchemyBot.Helper;
 using RSBot.Core;
+using RSBot.Core.Client.ReferenceObjects;
 using RSBot.Core.Event;
 using RSBot.Core.Network;
 using RSBot.Core.Objects;
 using System;
 using System.Linq;
+using System.Windows.Forms;
 
 namespace LuckyAlchemyBot.Bot
 {
@@ -15,7 +14,7 @@ namespace LuckyAlchemyBot.Bot
     {
         #region Members
 
-        private bool _shouldRun = false;
+        private bool _shouldRun;
 
         private InventoryItem _luckyPowder;
 
@@ -60,13 +59,15 @@ namespace LuckyAlchemyBot.Bot
         /// </summary>
         private void SubscribeEvents()
         {
-            EventManager.SubscribeEvent("OnElixirAlchemyCanceled", OnElixirAlchemyCanceled);
-            EventManager.SubscribeEvent("OnElixirAlchemyDestroyed", new Action<byte>(OnElixirAlchemyDestroyed));
-            EventManager.SubscribeEvent("OnElixirAlchemySuccess", new Action<InventoryItem>(OnElixirAlchemySuccess));
-            EventManager.SubscribeEvent("OnElixirAlchemy", OnElixirAlchemy);
-            EventManager.SubscribeEvent("OnElixirAlchemyFailed", new Action<InventoryItem>(OnElixirAlchemyFailed));
-            EventManager.SubscribeEvent("OnElixirAlchemyError", new Action<ushort>(OnElixirAlchemyError));
-            EventManager.SubscribeEvent("OnFuseRequest", new Action<Enums.AlchemyAction, Enums.AlchemyType>(OnFuseRequest));
+            EventManager.SubscribeEvent("OnAlchemyCanceled", new Action<AlchemyType>(OnElixirAlchemyCanceled));
+            EventManager.SubscribeEvent("OnAlchemyDestroyed",
+                new Action<InventoryItem, AlchemyType>(OnElixirAlchemyDestroyed));
+            EventManager.SubscribeEvent("OnAlchemySuccess",
+                new Action<InventoryItem, InventoryItem, AlchemyType>(OnElixirAlchemySuccess));
+            EventManager.SubscribeEvent("OnAlchemy", OnElixirAlchemy);
+            EventManager.SubscribeEvent("OnAlchemyFailed",
+                new Action<InventoryItem, InventoryItem, AlchemyType>(OnElixirAlchemyFailed));
+            EventManager.SubscribeEvent("OnFuseRequest", new Action<AlchemyAction, AlchemyType>(OnFuseRequest));
         }
 
         /// <summary>
@@ -79,7 +80,8 @@ namespace LuckyAlchemyBot.Bot
                 Kernel.Bot.Stop();
 
             //Config incomplete?
-            if (!_shouldRun || config == null || Globals.Botbase.Engine != Engine.Enhancement || config.Item == null || config.Elixir == null) return;
+            if (!_shouldRun || config == null || Globals.Botbase.Engine != Engine.Enhancement || config.Item == null ||
+                config.Elixir == null) return;
 
             _config = config;
             _luckyPowder = AlchemyItemHelper.GetLuckyPowder(config.Item);
@@ -87,10 +89,12 @@ namespace LuckyAlchemyBot.Bot
             //Bot should stop without lucky powder?
             if ((_luckyPowder == null || _luckyPowder.Amount == 0) && config.StopIfLuckyPowderEmpty)
             {
+           
                 Log.Warn("[LuckyAlchemyBot] No lucky powder left, stopping alchemy now!");
 
                 Kernel.Bot.Stop();
-
+                MessageBox.Show("No more lucky powder left in the inventory.", "Lucky powder", MessageBoxButtons.OK,
+                    MessageBoxIcon.Information);
                 return;
             }
 
@@ -109,7 +113,8 @@ namespace LuckyAlchemyBot.Bot
             {
                 var steadyStone = AlchemyItemHelper.GetSteadyStone(config.Item);
 
-                if (steadyStone != null && steadyStone.Amount > 0 && !AlchemyItemHelper.HasMagicOption(config.Item, MagicOption.MaterialSteady))
+                if (steadyStone != null && steadyStone.Amount > 0 &&
+                    !AlchemyItemHelper.HasMagicOption(config.Item, RefMagicOpt.MaterialSteady))
                 {
                     RequestHelper.SendMagicStoneRequest(_config.Item, steadyStone);
 
@@ -124,7 +129,8 @@ namespace LuckyAlchemyBot.Bot
             {
                 var luckyStone = AlchemyItemHelper.GetLuckyStone(config.Item);
 
-                if (luckyStone != null && luckyStone.Amount > 0 && !AlchemyItemHelper.HasMagicOption(config.Item, MagicOption.MaterialLuck))
+                if (luckyStone != null && luckyStone.Amount > 0 &&
+                    !AlchemyItemHelper.HasMagicOption(config.Item, RefMagicOpt.MaterialLuck))
                 {
                     RequestHelper.SendMagicStoneRequest(_config.Item, luckyStone);
 
@@ -139,7 +145,8 @@ namespace LuckyAlchemyBot.Bot
             {
                 var immortalStone = AlchemyItemHelper.GetImmortalStone(config.Item);
 
-                if (immortalStone != null && immortalStone.Amount > 0 && !AlchemyItemHelper.HasMagicOption(config.Item, MagicOption.MaterialImmortal))
+                if (immortalStone != null && immortalStone.Amount > 0 &&
+                    !AlchemyItemHelper.HasMagicOption(config.Item, RefMagicOpt.MaterialImmortal))
                 {
                     RequestHelper.SendMagicStoneRequest(_config.Item, immortalStone);
 
@@ -154,17 +161,20 @@ namespace LuckyAlchemyBot.Bot
             {
                 var astralStone = AlchemyItemHelper.GetAstralStone(config.Item);
 
-                if (astralStone != null && astralStone.Amount > 0 && !AlchemyItemHelper.HasMagicOption(config.Item, MagicOption.MaterialAstral))
+                if (astralStone != null && astralStone.Amount > 0 &&
+                    !AlchemyItemHelper.HasMagicOption(config.Item, RefMagicOpt.MaterialAstral))
                 {
                     //Is immortal high enough?
                     var magicOption =
-                        Globals.ReferenceManager.GetMagicOption(MagicOption.MaterialImmortal, (byte)config.Item.Record.Degree);
+                        Game.ReferenceManager.GetMagicOption(RefMagicOpt.MaterialImmortal,
+                            (byte)config.Item.Record.Degree);
 
                     //Can not fuse if immortal is not available (or not high enough)
                     var magicOptionInfo = config.Item.MagicOptions?.FirstOrDefault(m => m.Id == magicOption.Id);
                     if (magicOptionInfo == null)
                     {
-                        Log.Notify($"[LuckyAlchemyBot] Could not fuse {astralStone.Record.GetRealName()} because the immortal is not high enough");
+                        Log.Notify(
+                            $"[LuckyAlchemyBot] Could not fuse {astralStone.Record.GetRealName()} because the immortal is not high enough");
 
                         _config.UseAstralStones = false;
                         return;
@@ -197,8 +207,8 @@ namespace LuckyAlchemyBot.Bot
             var hasLuckyPowder = _luckyPowder != null && _luckyPowder.Amount > 0;
 
             var packet = new Packet(0x7150);
-            packet.WriteByte(Enums.AlchemyAction.Fuse); //fuse
-            packet.WriteByte(Enums.AlchemyType.Elixir); //type (Elixir)
+            packet.WriteByte(AlchemyAction.Fuse); //fuse
+            packet.WriteByte(AlchemyType.Elixir); //type (Elixir)
 
             packet.WriteByte(hasLuckyPowder ? (byte)3 : (byte)2);
 
@@ -212,23 +222,12 @@ namespace LuckyAlchemyBot.Bot
 
             Kernel.Proxy.Server.Send(packet);
 
-            FuseRequestHelper.Invoke(packet);
+            RequestHelper.ManuallyHandleFuseRequest(packet);
         }
 
         #endregion Methods
 
         #region Events
-
-        /// <summary>
-        /// Will be triggered if the magic stone fusing action got an error
-        /// </summary>
-        /// <param name="errorCode"></param>
-        private void OnElixirAlchemyError(ushort errorCode)
-        {
-            Log.Warn($"[LuckyAlchemyBot] Enhancing error: {errorCode:X}");
-
-            Kernel.Bot.Stop();
-        }
 
         /// <summary>
         /// Will be triggered if any elixir alchemy operation was completed
@@ -243,22 +242,30 @@ namespace LuckyAlchemyBot.Bot
         /// </summary>
         /// <param name="newItem"></param>
 
-        private void OnElixirAlchemySuccess(InventoryItem newItem)
+        private void OnElixirAlchemySuccess(InventoryItem oldItem, InventoryItem newItem, AlchemyType type)
         {
-            var message = Game.ReferenceManager.GetTranslation("UIIT_MSG_REINFORCERR_SUCCESS").JoymaxFormat(newItem.OptLevel);
+            if (type != AlchemyType.Elixir) return;
+
+            var message = Game.ReferenceManager.GetTranslation("UIIT_MSG_REINFORCERR_SUCCESS")
+                .JoymaxFormat(newItem.OptLevel);
 
             Log.Notify(message);
             Globals.View.AddLog(newItem.Record.GetRealName(), true, message);
 
             if (_config != null)
                 _config.Item = newItem;
+
+            _shouldRun = true;
         }
 
         /// <summary>
         /// Will be triggered if any elixir alchemy operation was canceled
         /// </summary>
-        private void OnElixirAlchemyCanceled()
+        ///
+        private void OnElixirAlchemyCanceled(AlchemyType type)
         {
+            if (type != AlchemyType.Elixir) return;
+
             Log.Notify(Game.ReferenceManager.GetTranslation("UIIT_MSG_ENCHANT_CANCEL"));
 
             _shouldRun = false;
@@ -267,48 +274,40 @@ namespace LuckyAlchemyBot.Bot
         /// <summary>
         /// Will be triggered if the selected item was destroyed. Logs a message and stops the bot
         /// </summary>
-        /// <param name="slot">The slot at which the item was destroyed</param>
-        private void OnElixirAlchemyDestroyed(byte slot)
+        /// <param name="oldItem">The the item that has been destroyed</param>
+        /// <param name="type">The type of alchemy that was triggered</param>
+        private void OnElixirAlchemyDestroyed(InventoryItem oldItem, AlchemyType type)
         {
-            Globals.Botbase.EnhancementConfig = null;
-            var message = Game.ReferenceManager.GetTranslation("UIIT_MSG_REINFORCERR_BREAKDOWN");
-            Log.Warn(message);
-
-            if (Globals.AlchemyItems == null || Globals.AlchemyItems.Count == 0) return;
-
-            var oldItem = Globals.AlchemyItems.First().Value;
-            Globals.View.AddLog(oldItem.Record.GetRealName(), false, message);
-
-            if (_config == null) return;
-
             _shouldRun = false;
-            Globals.View.SelectedItem = null;
-
-            Kernel.Bot.Stop();
         }
 
         /// <summary>
         /// Will be triggered if any elixir alchemy operation has failed. Logs a message and resets the current item
         /// </summary>
         /// <param name="newItem">The new item after the action has failed</param>
-        private void OnElixirAlchemyFailed(InventoryItem newItem)
+        /// <param name="type">The type of alchemy that was triggered</param>
+        private void OnElixirAlchemyFailed(InventoryItem oldItem, InventoryItem newItem, AlchemyType type)
         {
+            if (type != AlchemyType.Elixir) return;
+
+            _shouldRun = true;
             var message = Game.ReferenceManager.GetTranslation("UIIT_MSG_REINFORCERR_FAIL");
             Log.Warn(message);
             Globals.View.AddLog(newItem.Record.GetRealName(), false, message);
-            var oldItem = Globals.AlchemyItems.First().Value;
 
             if (oldItem == null) return;
 
             message = string.Empty;
             if (newItem.Durability < oldItem.Durability)
-                message = Game.ReferenceManager.GetTranslation("UIIT_MSG_REINFORCERR_FAILDOWN_DURABILITY").JoymaxFormat(newItem.Durability);
+                message = Game.ReferenceManager.GetTranslation("UIIT_MSG_REINFORCERR_FAILDOWN_DURABILITY")
+                    .JoymaxFormat(newItem.Durability);
 
             if (oldItem.OptLevel > 0 && newItem.OptLevel == 0)
                 message = Game.ReferenceManager.GetTranslation("UIIT_MSG_REINFORCERR_FAIL_RESULT_OPTLV_ZERO");
 
             if (oldItem.OptLevel > 0 && oldItem.OptLevel < newItem.OptLevel)
-                message = Game.ReferenceManager.GetTranslation("UIIT_MSG_REINFORCERR_FAIL_RESULT_OPTLV_DOWN").JoymaxFormat(newItem.OptLevel, _config.Item.OptLevel - newItem.OptLevel);
+                message = Game.ReferenceManager.GetTranslation("UIIT_MSG_REINFORCERR_FAIL_RESULT_OPTLV_DOWN")
+                    .JoymaxFormat(newItem.OptLevel, _config.Item.OptLevel - newItem.OptLevel);
 
             //Additional message
             if (message != string.Empty)
@@ -321,38 +320,9 @@ namespace LuckyAlchemyBot.Bot
                 _config.Item = newItem;
         }
 
-        /// <summary>
-        /// Will be triggered if any fuse request (either elixir or magic stone..) was sent to the server. Adds a log message.
-        /// </summary>
-        /// <param name="action">The alchemy action</param>
-        /// <param name="type">The type of alchemy</param>
-        private void OnFuseRequest(Enums.AlchemyAction action, Enums.AlchemyType type)
+        private void OnFuseRequest(AlchemyAction action, AlchemyType type)
         {
             _shouldRun = false;
-
-            var elixir = Globals.AlchemyItems.ElementAtOrDefault(1);
-            var item = Globals.AlchemyItems.ElementAtOrDefault(0);
-
-            if (elixir.Value == null || item.Value == null) return;
-
-            switch (type)
-            {
-                case Enums.AlchemyType.Elixir:
-                    Globals.View.AddLog(item.Value.Record.GetRealName(), true, $"Fusing elixir [{elixir.Value.Record.GetRealName()}");
-                    break;
-
-                case Enums.AlchemyType.MagicStone:
-                    Globals.View.AddLog(item.Value.Record.GetRealName(), true, $"Fusing magic stone [{elixir.Value.Record.GetRealName()}");
-                    break;
-
-                case Enums.AlchemyType.AttributeStone:
-                    Globals.View.AddLog(item.Value.Record.GetRealName(), true, $"Fusing attribute stone [{elixir.Value.Record.GetRealName()}");
-                    break;
-
-                default:
-                    Globals.View.AddLog(item.Value.Record.GetRealName(), true, $"Fusing [{elixir.Value.Record.GetRealName()}");
-                    break;
-            }
         }
 
         #endregion Events

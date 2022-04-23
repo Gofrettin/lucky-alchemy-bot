@@ -3,6 +3,7 @@ using RSBot.Core;
 using RSBot.Core.Objects;
 using System.Collections.Generic;
 using System.Linq;
+using RSBot.Core.Client.ReferenceObjects;
 
 namespace LuckyAlchemyBot.Helper
 {
@@ -29,22 +30,22 @@ namespace LuckyAlchemyBot.Helper
 
         public static InventoryItem GetLuckyStone(InventoryItem targetItem)
         {
-            return GetStoneByGroup(targetItem, MagicOption.MaterialLuck);
+            return GetStoneByGroup(targetItem, RefMagicOpt.MaterialLuck);
         }
 
         public static InventoryItem GetAstralStone(InventoryItem targetItem)
         {
-            return GetStoneByGroup(targetItem, MagicOption.MaterialAstral);
+            return GetStoneByGroup(targetItem, RefMagicOpt.MaterialAstral);
         }
 
         public static InventoryItem GetImmortalStone(InventoryItem targetItem)
         {
-            return GetStoneByGroup(targetItem, MagicOption.MaterialImmortal);
+            return GetStoneByGroup(targetItem, RefMagicOpt.MaterialImmortal);
         }
 
         public static InventoryItem GetSteadyStone(InventoryItem targetItem)
         {
-            return GetStoneByGroup(targetItem, MagicOption.MaterialSteady);
+            return GetStoneByGroup(targetItem, RefMagicOpt.MaterialSteady);
         }
 
         public static InventoryItem GetStoneByGroup(InventoryItem targetItem, string name)
@@ -59,7 +60,7 @@ namespace LuckyAlchemyBot.Helper
 
             foreach (var i in inventoryItem.MagicOptions)
             {
-                var option = Globals.ReferenceManager.GetMagicOption(i.Id);
+                var option = Game.ReferenceManager.GetMagicOption(i.Id);
 
                 if (option != null && option.Group == materialGroup)
                     return true;

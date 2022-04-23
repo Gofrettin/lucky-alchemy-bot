@@ -1,4 +1,14 @@
-﻿namespace LuckyAlchemyBot.Views.Settings
+﻿
+using ComboBox = SDUI.Controls.ComboBox;
+using GroupBox = SDUI.Controls.GroupBox;
+using Label = SDUI.Controls.Label;
+using ListView = SDUI.Controls.ListView;
+using TabControl = SDUI.Controls.TabControl;
+using Panel = SDUI.Controls.Panel;
+using RadioButton = SDUI.Controls.Radio;
+using CheckBox = SDUI.Controls.CheckBox;
+
+namespace LuckyAlchemyBot.Views.Settings
 {
     partial class EnhanceSettingsView
     {
@@ -28,23 +38,23 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.lblMaxOptLevel = new System.Windows.Forms.Label();
+            this.lblMaxOptLevel = new SDUI.Controls.Label();
             this.numMaxEnhancement = new System.Windows.Forms.NumericUpDown();
-            this.lblPlus = new System.Windows.Forms.Label();
-            this.checkUseLuckyStones = new System.Windows.Forms.CheckBox();
-            this.checkUseImmortalStones = new System.Windows.Forms.CheckBox();
-            this.lblElixir = new System.Windows.Forms.Label();
-            this.comboElixir = new System.Windows.Forms.ComboBox();
-            this.linkRefreshItemList = new System.Windows.Forms.Label();
-            this.checkUseAstralStones = new System.Windows.Forms.CheckBox();
-            this.lblLuckyCount = new System.Windows.Forms.Label();
-            this.lblImmortalCount = new System.Windows.Forms.Label();
-            this.lblAstralCount = new System.Windows.Forms.Label();
-            this.checkUseSteadyStones = new System.Windows.Forms.CheckBox();
-            this.lblSteadyStonesCount = new System.Windows.Forms.Label();
-            this.lblLuckyPowderCount = new System.Windows.Forms.Label();
-            this.checkStopLuckyPowder = new System.Windows.Forms.CheckBox();
-            this.lblCurrentOptLevel = new System.Windows.Forms.Label();
+            this.lblPlus = new SDUI.Controls.Label();
+            this.checkUseLuckyStones = new SDUI.Controls.CheckBox();
+            this.checkUseImmortalStones = new SDUI.Controls.CheckBox();
+            this.lblElixir = new SDUI.Controls.Label();
+            this.comboElixir = new SDUI.Controls.ComboBox();
+            this.linkRefreshItemList = new SDUI.Controls.Label();
+            this.checkUseAstralStones = new SDUI.Controls.CheckBox();
+            this.lblLuckyCount = new SDUI.Controls.Label();
+            this.lblImmortalCount = new SDUI.Controls.Label();
+            this.lblAstralCount = new SDUI.Controls.Label();
+            this.checkUseSteadyStones = new SDUI.Controls.CheckBox();
+            this.lblSteadyStonesCount = new SDUI.Controls.Label();
+            this.lblLuckyPowderCount = new SDUI.Controls.Label();
+            this.checkStopLuckyPowder = new SDUI.Controls.CheckBox();
+            this.lblCurrentOptLevel = new SDUI.Controls.Label();
             ((System.ComponentModel.ISupportInitialize)(this.numMaxEnhancement)).BeginInit();
             this.SuspendLayout();
             // 
@@ -92,24 +102,22 @@
             // 
             // checkUseLuckyStones
             // 
-            this.checkUseLuckyStones.AutoSize = true;
+            this.checkUseLuckyStones.Checked = false;
             this.checkUseLuckyStones.Location = new System.Drawing.Point(141, 130);
             this.checkUseLuckyStones.Name = "checkUseLuckyStones";
             this.checkUseLuckyStones.Size = new System.Drawing.Size(111, 17);
             this.checkUseLuckyStones.TabIndex = 3;
             this.checkUseLuckyStones.Text = "Use lucky stones";
-            this.checkUseLuckyStones.UseVisualStyleBackColor = true;
             this.checkUseLuckyStones.CheckedChanged += new System.EventHandler(this.config_CheckedChange);
             // 
             // checkUseImmortalStones
             // 
-            this.checkUseImmortalStones.AutoSize = true;
+            this.checkUseImmortalStones.Checked = false;
             this.checkUseImmortalStones.Location = new System.Drawing.Point(141, 153);
             this.checkUseImmortalStones.Name = "checkUseImmortalStones";
             this.checkUseImmortalStones.Size = new System.Drawing.Size(130, 17);
             this.checkUseImmortalStones.TabIndex = 4;
             this.checkUseImmortalStones.Text = "Use immortal stones";
-            this.checkUseImmortalStones.UseVisualStyleBackColor = true;
             this.checkUseImmortalStones.CheckedChanged += new System.EventHandler(this.config_CheckedChange);
             // 
             // lblElixir
@@ -123,11 +131,16 @@
             // 
             // comboElixir
             // 
+            this.comboElixir.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.comboElixir.DropDownHeight = 100;
             this.comboElixir.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboElixir.FormattingEnabled = true;
+            this.comboElixir.IntegralHeight = false;
+            this.comboElixir.ItemHeight = 17;
             this.comboElixir.Location = new System.Drawing.Point(140, 67);
             this.comboElixir.Name = "comboElixir";
-            this.comboElixir.Size = new System.Drawing.Size(193, 21);
+            this.comboElixir.Size = new System.Drawing.Size(193, 23);
+            this.comboElixir.StartIndex = 0;
             this.comboElixir.TabIndex = 6;
             this.comboElixir.SelectedIndexChanged += new System.EventHandler(this.config_CheckedChange);
             // 
@@ -146,13 +159,12 @@
             // 
             // checkUseAstralStones
             // 
-            this.checkUseAstralStones.AutoSize = true;
+            this.checkUseAstralStones.Checked = false;
             this.checkUseAstralStones.Location = new System.Drawing.Point(141, 176);
             this.checkUseAstralStones.Name = "checkUseAstralStones";
             this.checkUseAstralStones.Size = new System.Drawing.Size(113, 17);
             this.checkUseAstralStones.TabIndex = 8;
             this.checkUseAstralStones.Text = "Use astral stones";
-            this.checkUseAstralStones.UseVisualStyleBackColor = true;
             this.checkUseAstralStones.CheckedChanged += new System.EventHandler(this.config_CheckedChange);
             // 
             // lblLuckyCount
@@ -184,13 +196,12 @@
             // 
             // checkUseSteadyStones
             // 
-            this.checkUseSteadyStones.AutoSize = true;
+            this.checkUseSteadyStones.Checked = false;
             this.checkUseSteadyStones.Location = new System.Drawing.Point(141, 199);
             this.checkUseSteadyStones.Name = "checkUseSteadyStones";
             this.checkUseSteadyStones.Size = new System.Drawing.Size(118, 17);
             this.checkUseSteadyStones.TabIndex = 8;
             this.checkUseSteadyStones.Text = "Use steady stones";
-            this.checkUseSteadyStones.UseVisualStyleBackColor = true;
             this.checkUseSteadyStones.CheckedChanged += new System.EventHandler(this.config_CheckedChange);
             // 
             // lblSteadyStonesCount
@@ -213,21 +224,18 @@
             // 
             // checkStopLuckyPowder
             // 
-            this.checkStopLuckyPowder.AutoSize = true;
             this.checkStopLuckyPowder.Checked = true;
-            this.checkStopLuckyPowder.CheckState = System.Windows.Forms.CheckState.Checked;
             this.checkStopLuckyPowder.Location = new System.Drawing.Point(141, 107);
             this.checkStopLuckyPowder.Name = "checkStopLuckyPowder";
             this.checkStopLuckyPowder.Size = new System.Drawing.Size(141, 17);
             this.checkStopLuckyPowder.TabIndex = 10;
             this.checkStopLuckyPowder.Text = "Stop if 0 lucky powder";
-            this.checkStopLuckyPowder.UseVisualStyleBackColor = true;
             this.checkStopLuckyPowder.CheckedChanged += new System.EventHandler(this.config_CheckedChange);
             // 
             // lblCurrentOptLevel
             // 
             this.lblCurrentOptLevel.AutoSize = true;
-            this.lblCurrentOptLevel.BackColor = System.Drawing.SystemColors.Control;
+            this.lblCurrentOptLevel.BackColor = System.Drawing.Color.Transparent;
             this.lblCurrentOptLevel.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.lblCurrentOptLevel.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblCurrentOptLevel.Location = new System.Drawing.Point(200, 32);
@@ -268,22 +276,22 @@
 
         #endregion
 
-        private System.Windows.Forms.Label lblMaxOptLevel;
+        private Label lblMaxOptLevel;
         private System.Windows.Forms.NumericUpDown numMaxEnhancement;
-        private System.Windows.Forms.Label lblPlus;
-        private System.Windows.Forms.CheckBox checkUseLuckyStones;
-        private System.Windows.Forms.CheckBox checkUseImmortalStones;
-        private System.Windows.Forms.Label lblElixir;
-        private System.Windows.Forms.ComboBox comboElixir;
-        private System.Windows.Forms.Label linkRefreshItemList;
-        private System.Windows.Forms.CheckBox checkUseAstralStones;
-        private System.Windows.Forms.Label lblLuckyCount;
-        private System.Windows.Forms.Label lblImmortalCount;
-        private System.Windows.Forms.Label lblAstralCount;
-        private System.Windows.Forms.CheckBox checkUseSteadyStones;
-        private System.Windows.Forms.Label lblSteadyStonesCount;
-        private System.Windows.Forms.Label lblLuckyPowderCount;
-        private System.Windows.Forms.CheckBox checkStopLuckyPowder;
-        private System.Windows.Forms.Label lblCurrentOptLevel;
+        private Label lblPlus;
+        private CheckBox checkUseLuckyStones;
+        private CheckBox checkUseImmortalStones;
+        private Label lblElixir;
+        private ComboBox comboElixir;
+        private Label linkRefreshItemList;
+        private CheckBox checkUseAstralStones;
+        private Label lblLuckyCount;
+        private Label lblImmortalCount;
+        private Label lblAstralCount;
+        private CheckBox checkUseSteadyStones;
+        private Label lblSteadyStonesCount;
+        private Label lblLuckyPowderCount;
+        private CheckBox checkStopLuckyPowder;
+        private Label lblCurrentOptLevel;
     }
 }

@@ -1,6 +1,7 @@
-﻿using LuckyAlchemyBot.Network.Handler;
-using LuckyAlchemyBot.Objects;
+﻿using System.Collections.Generic;
 using RSBot.Core;
+using RSBot.Core.Client.ReferenceObjects;
+using RSBot.Core.Event;
 using RSBot.Core.Network;
 using RSBot.Core.Objects;
 
@@ -25,8 +26,8 @@ namespace LuckyAlchemyBot.Helper
 
             var packet = new Packet(0x7151);
 
-            packet.WriteByte(Enums.AlchemyAction.Fuse); //Fuse
-            packet.WriteByte(Enums.AlchemyType.MagicStone); //MagicStone
+            packet.WriteByte(AlchemyAction.Fuse); //Fuse
+            packet.WriteByte(AlchemyType.MagicStone); //MagicStone
             packet.WriteByte(2); //Slot count
 
             packet.WriteByte(item.Slot);
@@ -35,7 +36,48 @@ namespace LuckyAlchemyBot.Helper
             packet.Lock();
             Kernel.Proxy.Server.Send(packet);
 
-            FuseRequestHelper.Invoke(packet);
+            ManuallyHandleFuseRequest(packet);
+        }
+
+        /// <summary>
+        /// Since the core does not fire the OnFuseRequest if the request was made inside the bot it's required to manually set everything correctly
+        /// </summary>
+        /// <param name="packet"></param>
+        public static void ManuallyHandleFuseRequest(Packet packet)
+        {
+            var action = (AlchemyAction)packet.ReadByte();
+
+            if (action != AlchemyAction.Fuse) return;
+
+            var type = (AlchemyType)packet.ReadByte();
+            if (type == AlchemyType.SocketInsert)
+            {
+                var item = Game.Player.Inventory.GetItemAt(packet.ReadByte()); //Target item
+                var socketItem = Game.Player.Inventory.GetItemAt(packet.ReadByte()); //Target item
+
+                if (item != null && socketItem != null)
+                    RSBot.Core.Game.Player.ActiveAlchemyItems = new Dictionary<byte, InventoryItem>
+                    {
+                        { item.Slot, item },
+                        { socketItem.Slot, item }
+                    };
+
+                return;
+            }
+
+            var slots = packet.ReadByteArray(packet.ReadByte());
+
+            Game.Player.ActiveAlchemyItems = new Dictionary<byte, InventoryItem>(slots.Length);
+
+            foreach (var slot in slots)
+            {
+                var item = Game.Player.Inventory.GetItemAt(slot);
+
+                if (item != null)
+                    Game.Player.ActiveAlchemyItems.Add(item.Slot, item);
+            }
+
+            EventManager.FireEvent("OnFuseRequest", action, type);
         }
 
         #endregion Methods

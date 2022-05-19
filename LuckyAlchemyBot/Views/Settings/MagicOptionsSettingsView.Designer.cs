@@ -30,7 +30,7 @@ namespace LuckyAlchemyBot.Views.Settings
         /// </summary>
         private void InitializeComponent()
         {
-            this.lvMagicOptions = new System.Windows.Forms.ListView();
+            this.lvMagicOptions = new SDUI.Controls.ListView();
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -41,7 +41,6 @@ namespace LuckyAlchemyBot.Views.Settings
             // lvMagicOptions
             // 
             this.lvMagicOptions.BackColor = System.Drawing.SystemColors.Window;
-            this.lvMagicOptions.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lvMagicOptions.CheckBoxes = true;
             this.lvMagicOptions.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.columnHeader1,
@@ -105,7 +104,7 @@ namespace LuckyAlchemyBot.Views.Settings
 
         #endregion
 
-        private System.Windows.Forms.ListView lvMagicOptions;
+        private SDUI.Controls.ListView lvMagicOptions;
         private System.Windows.Forms.ColumnHeader columnHeader1;
         private System.Windows.Forms.ColumnHeader columnHeader2;
         private System.Windows.Forms.ColumnHeader columnHeader3;

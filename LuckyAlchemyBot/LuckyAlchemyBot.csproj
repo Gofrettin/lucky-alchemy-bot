@@ -18,7 +18,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\..\..\SDClowen\RSBot\Build\Bots\</OutputPath>
+    <OutputPath>..\..\..\Build\Bots\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -102,12 +102,12 @@
     <None Include="Resources\flask.png" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\SDClowen\RSBot\Library\RSBot.Core\RSBot.Core.csproj">
+    <ProjectReference Include="..\..\..\Library\RSBot.Core\RSBot.Core.csproj">
       <Project>{84323c14-eb9f-44d9-8980-89c9f82db4ee}</Project>
       <Name>RSBot.Core</Name>
       <Private>False</Private>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\SDClowen\RSBot\SDUI\SDUI\SDUI.csproj">
+    <ProjectReference Include="..\..\..\SDUI\SDUI\SDUI.csproj">
       <Project>{38b06e05-d80d-4e99-9f62-8b3af0b7ac53}</Project>
       <Name>SDUI</Name>
     </ProjectReference>

@@ -19,7 +19,7 @@ namespace LuckyAlchemyBot
 
         public static bool IsActive => Kernel.Bot != null && Kernel.Bot.Running && Kernel.Bot.Botbase.Info.Name == Name;
 
-        public static Version Version => new Version("0.1.0");
+        public static Version Version => new Version("0.0.1");
 
         public BotbaseInfo Info => new BotbaseInfo()
         {

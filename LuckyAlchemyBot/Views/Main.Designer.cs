@@ -1,4 +1,5 @@
-﻿using System.Windows.Forms;
+﻿using System.Drawing;
+using System.Windows.Forms;
 
 
 using ComboBox = SDUI.Controls.ComboBox;
@@ -54,10 +55,10 @@ namespace LuckyAlchemyBot.Views
             this.lblCopyright = new SDUI.Controls.Label();
             this.tabControlItemInfo = new SDUI.Controls.TabControl();
             this.tabMagicOptions = new System.Windows.Forms.TabPage();
-            this.listMagicOptions = new System.Windows.Forms.ListBox();
+            this.listMagicOptions = new SDUI.Controls.ListView();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.lblUnsupported = new SDUI.Controls.Label();
-            this.listAttributes = new System.Windows.Forms.ListBox();
+            this.listAttributes = new SDUI.Controls.ListView();
             this.linkGithub = new System.Windows.Forms.LinkLabel();
             this.panelSettingsGroup = new SDUI.Controls.Panel();
             this.panelSettings = new SDUI.Controls.Panel();
@@ -112,7 +113,6 @@ namespace LuckyAlchemyBot.Views
             this.comboItem.Location = new System.Drawing.Point(18, 41);
             this.comboItem.Name = "comboItem";
             this.comboItem.Size = new System.Drawing.Size(219, 23);
-            this.comboItem.StartIndex = 0;
             this.comboItem.TabIndex = 4;
             this.comboItem.SelectedIndexChanged += new System.EventHandler(this.comboItem_SelectedIndexChanged);
             // 
@@ -211,6 +211,7 @@ namespace LuckyAlchemyBot.Views
             this.tabControlItemInfo.Border = new System.Windows.Forms.Padding(1);
             this.tabControlItemInfo.Controls.Add(this.tabMagicOptions);
             this.tabControlItemInfo.Controls.Add(this.tabPage2);
+            this.tabControlItemInfo.HideTabArea = false;
             this.tabControlItemInfo.Location = new System.Drawing.Point(14, 141);
             this.tabControlItemInfo.Name = "tabControlItemInfo";
             this.tabControlItemInfo.SelectedIndex = 0;
@@ -231,11 +232,14 @@ namespace LuckyAlchemyBot.Views
             // listMagicOptions
             // 
             this.listMagicOptions.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.listMagicOptions.FormattingEnabled = true;
+            this.listMagicOptions.FullRowSelect = true;
+            this.listMagicOptions.HideSelection = false;
             this.listMagicOptions.Location = new System.Drawing.Point(3, 3);
             this.listMagicOptions.Name = "listMagicOptions";
             this.listMagicOptions.Size = new System.Drawing.Size(262, 139);
             this.listMagicOptions.TabIndex = 2;
+            this.listMagicOptions.UseCompatibleStateImageBehavior = false;
+            this.listMagicOptions.View = System.Windows.Forms.View.Details;
             // 
             // tabPage2
             // 
@@ -261,12 +265,14 @@ namespace LuckyAlchemyBot.Views
             // listAttributes
             // 
             this.listAttributes.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.listAttributes.Enabled = false;
-            this.listAttributes.FormattingEnabled = true;
+            this.listAttributes.FullRowSelect = true;
+            this.listAttributes.HideSelection = false;
             this.listAttributes.Location = new System.Drawing.Point(3, 3);
             this.listAttributes.Name = "listAttributes";
             this.listAttributes.Size = new System.Drawing.Size(262, 139);
             this.listAttributes.TabIndex = 3;
+            this.listAttributes.UseCompatibleStateImageBehavior = false;
+            this.listAttributes.View = System.Windows.Forms.View.Details;
             // 
             // linkGithub
             // 
@@ -315,9 +321,9 @@ namespace LuckyAlchemyBot.Views
             // radioMagicOptions
             // 
             this.radioMagicOptions.Checked = false;
-            this.radioMagicOptions.Location = new System.Drawing.Point(121, 7);
+            this.radioMagicOptions.Location = new System.Drawing.Point(143, 7);
             this.radioMagicOptions.Name = "radioMagicOptions";
-            this.radioMagicOptions.Size = new System.Drawing.Size(114, 23);
+            this.radioMagicOptions.Size = new System.Drawing.Size(101, 23);
             this.radioMagicOptions.TabIndex = 1;
             this.radioMagicOptions.Text = "Mag. options";
             this.radioMagicOptions.CheckedChanged += new System.EventHandler(this.radioEngine_CheckedChanged);
@@ -325,9 +331,9 @@ namespace LuckyAlchemyBot.Views
             // radioEnhance
             // 
             this.radioEnhance.Checked = true;
-            this.radioEnhance.Location = new System.Drawing.Point(9, 7);
+            this.radioEnhance.Location = new System.Drawing.Point(21, 7);
             this.radioEnhance.Name = "radioEnhance";
-            this.radioEnhance.Size = new System.Drawing.Size(106, 23);
+            this.radioEnhance.Size = new System.Drawing.Size(93, 23);
             this.radioEnhance.TabIndex = 0;
             this.radioEnhance.Text = "Enhance (+)";
             this.radioEnhance.CheckedChanged += new System.EventHandler(this.radioEngine_CheckedChanged);
@@ -353,7 +359,6 @@ namespace LuckyAlchemyBot.Views
             this.tabPage2.PerformLayout();
             this.panelSettingsGroup.ResumeLayout(false);
             this.panel2.ResumeLayout(false);
-            this.panel2.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -372,13 +377,13 @@ namespace LuckyAlchemyBot.Views
         private Label lblDegree;
         private Label lblDegreeText;
         private Label lblOptLevel;
-        private ListBox listMagicOptions;
+        private ListView listMagicOptions;
         private Label lblCopyright;
         private TabControl tabControlItemInfo;
         private TabPage tabPage2;
         private TabPage tabMagicOptions;
         private Label lblItemSelection;
-        private ListBox listAttributes;
+        private ListView listAttributes;
         private Label lblUnsupported;
         private LinkLabel linkGithub;
         private Panel panelSettingsGroup;

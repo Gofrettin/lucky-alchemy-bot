@@ -16,7 +16,6 @@ namespace LuckyAlchemyBot.Subscriber
             EventManager.SubscribeEvent("OnAlchemyDestroyed", new Action<InventoryItem, AlchemyType>(OnAlchemyDestroyed));
             EventManager.SubscribeEvent("OnFuseRequest", new Action<AlchemyAction, AlchemyType>(OnFuseRequest));
             EventManager.SubscribeEvent("OnMagicOptionGranted", new Action<byte, string>(OnMagicOptionGranted));
-            EventManager.SubscribeEvent("OnMagicOptionUpdated", new Action<InventoryItem, InventoryItem>(OnMagicOptionUpdated));
         }
 
         private static void OnMagicOptionGranted(byte slot, string group)
@@ -25,14 +24,6 @@ namespace LuckyAlchemyBot.Subscriber
             var option = Game.ReferenceManager.GetMagicOption(group, (byte) item.Record.Degree);
 
             Game.ReferenceManager.GetTranslation("UIIT_MSG_ALCHEMY_APPEND_ATTR").JoymaxFormat(option.GetGroupTranslation(), item.Record.GetRealName());
-        }
-
-        private static void OnMagicOptionUpdated(InventoryItem oldItem, InventoryItem newItem)
-        {
-            var oldMagicOptions = oldItem.MagicOptions;
-            var newItemMagicOptions = newItem.MagicOptions;
-
-
         }
 
         private static void OnAlchemyDestroyed(InventoryItem oldItem, AlchemyType type)

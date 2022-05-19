@@ -39,7 +39,7 @@ namespace LuckyAlchemyBot.Views.Settings
         private void InitializeComponent()
         {
             this.lblMaxOptLevel = new SDUI.Controls.Label();
-            this.numMaxEnhancement = new System.Windows.Forms.NumericUpDown();
+            this.numMaxEnhancement = new SDUI.Controls.NumUpDown();
             this.lblPlus = new SDUI.Controls.Label();
             this.checkUseLuckyStones = new SDUI.Controls.CheckBox();
             this.checkUseImmortalStones = new SDUI.Controls.CheckBox();
@@ -69,6 +69,9 @@ namespace LuckyAlchemyBot.Views.Settings
             // 
             // numMaxEnhancement
             // 
+            this.numMaxEnhancement.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(238)))), ((int)(((byte)(238)))));
+            this.numMaxEnhancement.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.numMaxEnhancement.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.numMaxEnhancement.Location = new System.Drawing.Point(140, 32);
             this.numMaxEnhancement.Maximum = new decimal(new int[] {
             255,
@@ -102,20 +105,24 @@ namespace LuckyAlchemyBot.Views.Settings
             // 
             // checkUseLuckyStones
             // 
+            this.checkUseLuckyStones.AutoSize = true;
+            this.checkUseLuckyStones.BackColor = System.Drawing.Color.Transparent;
             this.checkUseLuckyStones.Checked = false;
             this.checkUseLuckyStones.Location = new System.Drawing.Point(141, 130);
             this.checkUseLuckyStones.Name = "checkUseLuckyStones";
-            this.checkUseLuckyStones.Size = new System.Drawing.Size(111, 17);
+            this.checkUseLuckyStones.Size = new System.Drawing.Size(108, 13);
             this.checkUseLuckyStones.TabIndex = 3;
             this.checkUseLuckyStones.Text = "Use lucky stones";
             this.checkUseLuckyStones.CheckedChanged += new System.EventHandler(this.config_CheckedChange);
             // 
             // checkUseImmortalStones
             // 
+            this.checkUseImmortalStones.AutoSize = true;
+            this.checkUseImmortalStones.BackColor = System.Drawing.Color.Transparent;
             this.checkUseImmortalStones.Checked = false;
             this.checkUseImmortalStones.Location = new System.Drawing.Point(141, 153);
             this.checkUseImmortalStones.Name = "checkUseImmortalStones";
-            this.checkUseImmortalStones.Size = new System.Drawing.Size(130, 17);
+            this.checkUseImmortalStones.Size = new System.Drawing.Size(127, 13);
             this.checkUseImmortalStones.TabIndex = 4;
             this.checkUseImmortalStones.Text = "Use immortal stones";
             this.checkUseImmortalStones.CheckedChanged += new System.EventHandler(this.config_CheckedChange);
@@ -131,6 +138,7 @@ namespace LuckyAlchemyBot.Views.Settings
             // 
             // comboElixir
             // 
+            this.comboElixir.BackColor = System.Drawing.Color.Black;
             this.comboElixir.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
             this.comboElixir.DropDownHeight = 100;
             this.comboElixir.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
@@ -140,7 +148,6 @@ namespace LuckyAlchemyBot.Views.Settings
             this.comboElixir.Location = new System.Drawing.Point(140, 67);
             this.comboElixir.Name = "comboElixir";
             this.comboElixir.Size = new System.Drawing.Size(193, 23);
-            this.comboElixir.StartIndex = 0;
             this.comboElixir.TabIndex = 6;
             this.comboElixir.SelectedIndexChanged += new System.EventHandler(this.config_CheckedChange);
             // 
@@ -159,10 +166,12 @@ namespace LuckyAlchemyBot.Views.Settings
             // 
             // checkUseAstralStones
             // 
+            this.checkUseAstralStones.AutoSize = true;
+            this.checkUseAstralStones.BackColor = System.Drawing.Color.Transparent;
             this.checkUseAstralStones.Checked = false;
             this.checkUseAstralStones.Location = new System.Drawing.Point(141, 176);
             this.checkUseAstralStones.Name = "checkUseAstralStones";
-            this.checkUseAstralStones.Size = new System.Drawing.Size(113, 17);
+            this.checkUseAstralStones.Size = new System.Drawing.Size(110, 13);
             this.checkUseAstralStones.TabIndex = 8;
             this.checkUseAstralStones.Text = "Use astral stones";
             this.checkUseAstralStones.CheckedChanged += new System.EventHandler(this.config_CheckedChange);
@@ -196,10 +205,12 @@ namespace LuckyAlchemyBot.Views.Settings
             // 
             // checkUseSteadyStones
             // 
+            this.checkUseSteadyStones.AutoSize = true;
+            this.checkUseSteadyStones.BackColor = System.Drawing.Color.Transparent;
             this.checkUseSteadyStones.Checked = false;
             this.checkUseSteadyStones.Location = new System.Drawing.Point(141, 199);
             this.checkUseSteadyStones.Name = "checkUseSteadyStones";
-            this.checkUseSteadyStones.Size = new System.Drawing.Size(118, 17);
+            this.checkUseSteadyStones.Size = new System.Drawing.Size(115, 13);
             this.checkUseSteadyStones.TabIndex = 8;
             this.checkUseSteadyStones.Text = "Use steady stones";
             this.checkUseSteadyStones.CheckedChanged += new System.EventHandler(this.config_CheckedChange);
@@ -224,10 +235,12 @@ namespace LuckyAlchemyBot.Views.Settings
             // 
             // checkStopLuckyPowder
             // 
+            this.checkStopLuckyPowder.AutoSize = true;
+            this.checkStopLuckyPowder.BackColor = System.Drawing.Color.Transparent;
             this.checkStopLuckyPowder.Checked = true;
             this.checkStopLuckyPowder.Location = new System.Drawing.Point(141, 107);
             this.checkStopLuckyPowder.Name = "checkStopLuckyPowder";
-            this.checkStopLuckyPowder.Size = new System.Drawing.Size(141, 17);
+            this.checkStopLuckyPowder.Size = new System.Drawing.Size(138, 13);
             this.checkStopLuckyPowder.TabIndex = 10;
             this.checkStopLuckyPowder.Text = "Stop if 0 lucky powder";
             this.checkStopLuckyPowder.CheckedChanged += new System.EventHandler(this.config_CheckedChange);
@@ -277,7 +290,6 @@ namespace LuckyAlchemyBot.Views.Settings
         #endregion
 
         private Label lblMaxOptLevel;
-        private System.Windows.Forms.NumericUpDown numMaxEnhancement;
         private Label lblPlus;
         private CheckBox checkUseLuckyStones;
         private CheckBox checkUseImmortalStones;
@@ -293,5 +305,6 @@ namespace LuckyAlchemyBot.Views.Settings
         private Label lblLuckyPowderCount;
         private CheckBox checkStopLuckyPowder;
         private Label lblCurrentOptLevel;
+        private SDUI.Controls.NumUpDown numMaxEnhancement;
     }
 }

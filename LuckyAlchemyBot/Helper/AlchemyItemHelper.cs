@@ -50,7 +50,7 @@ namespace LuckyAlchemyBot.Helper
 
         public static InventoryItem GetStoneByGroup(InventoryItem targetItem, string name)
         {
-            return Game.Player.Inventory.Items.FirstOrDefault(i => i.Record.Desc1 == name && i.Record.ItemClass == targetItem.Record.Degree);
+            return Game.Player.Inventory.FirstOrDefault(i => i.Record.Desc1 == name && i.Record.ItemClass == targetItem.Record.Degree);
         }
 
         public static bool HasMagicOption(InventoryItem inventoryItem, string materialGroup)
@@ -72,19 +72,19 @@ namespace LuckyAlchemyBot.Helper
         public static List<InventoryItem> GetElixirItems(ElixirType elixirType = ElixirType.Unspecified)
         {
             if (elixirType == ElixirType.Protector)
-                return Game.Player.Inventory.Items.Where(i => i.Record.Param1 == ParamProtectorElixir).ToList();
+                return Game.Player.Inventory.Where(i => i.Record.Param1 == ParamProtectorElixir).ToList();
 
             if (elixirType == ElixirType.Weapon)
-                return Game.Player.Inventory.Items.Where(i => i.Record.Param1 == ParamWeaponElixir).ToList();
+                return Game.Player.Inventory.Where(i => i.Record.Param1 == ParamWeaponElixir).ToList();
 
             if (elixirType == ElixirType.Accessory)
-                return Game.Player.Inventory.Items.Where(i => i.Record.Param1 == ParamAccessoryElixir).ToList();
+                return Game.Player.Inventory.Where(i => i.Record.Param1 == ParamAccessoryElixir).ToList();
 
             if (elixirType == ElixirType.Shield)
-                return Game.Player.Inventory.Items.Where(i => i.Record.Param1 == ParamShieldElixir).ToList();
+                return Game.Player.Inventory.Where(i => i.Record.Param1 == ParamShieldElixir).ToList();
 
             if (elixirType == ElixirType.Unspecified)
-                return Game.Player.Inventory.GetItems(new TypeIdFilter(3, 3, 10, 1));
+                return Game.Player.Inventory.GetItems(new TypeIdFilter(3, 3, 10, 1)).ToList();
 
             return default;
         }

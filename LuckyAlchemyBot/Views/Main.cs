@@ -94,7 +94,7 @@ namespace LuckyAlchemyBot.Views
         {
             comboItem.Items.Clear();
 
-            var items = Game.Player.Inventory.Items.Where(i => i.Record.IsEquip).ToList();
+            var items = Game.Player.Inventory.Where(i => i.Record.IsEquip).ToList();
 
             items.ForEach((item) =>
             {
@@ -261,6 +261,9 @@ namespace LuckyAlchemyBot.Views
         /// <param name="engine">The engine to load the settings for</param>
         private void LoadEngineSettings(Engine engine)
         {
+            if (_enhanceSettingsView == null || _magicOptionsSettingsView == null)
+                return;
+
             EngineChanged?.Invoke(SelectedItem, engine);
 
             if (Globals.Botbase != null && !Kernel.Bot.Running)
